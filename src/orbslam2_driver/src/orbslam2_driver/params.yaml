@@ -1,0 +1,196 @@
+header_include_path: orbslam2_driver/orbslam2_driver.hpp
+namespace: ORB_SLAM2Driver
+node_class_name: ORB_SLAM2DriverNode
+
+params:
+  autostart:
+    type: bool
+    default_value: false
+    description: "Activates system automatically at node startup."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: autostart_
+
+  body_frame_id:
+    type: string
+    default_value: "base_link"
+    description: "Name of the body frame."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: body_frame_id_
+
+  camera_orientation_topic:
+    type: string
+    default_value: "/camera/orientation"
+    description: "Name of the camera orientation (IMU) topic."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: camera_orientation_topic_
+
+  camera_topic_1:
+    type: string
+    default_value: "/camera/image_raw"
+    description: "Name of the first camera topic."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: camera_topic_1_
+
+  camera_topic_2:
+    type: string
+    default_value: "/camera/image_raw"
+    description: "Name of the second camera topic."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: camera_topic_2_
+
+  covariance_scaling_factor:
+    type: double
+    default_value: 1000.0
+    min_value: 0.000001
+    max_value: 1000000.0
+    step: 0.0
+    description: "Covariance matrix scaling factor."
+    constraints: ""
+    read_only: false
+    var_name: covariance_scaling_factor_
+
+  display:
+    type: bool
+    default_value: false
+    description: "Activates the MapViewer GUI with Pangolin."
+    constraints: "Changes require system restart, do not use on headless systems."
+    read_only: false
+    var_name: display_
+
+  frame_view:
+    type: bool
+    default_value: false
+    description: "Activates the FrameViewer module publisher."
+    constraints: "Cannot be changed while the system is active."
+    read_only: false
+    validator: validate_frame_view
+
+  global_frame_id:
+    type: string
+    default_value: ""
+    description: "Name of the global frame, activates the 'global mode': poses in the global frame."
+    constraints: "Cannot be changed while the system is active, setting this to something activates 'global mode', which requires a loaded map and a tf from this frame to link_namespace/orb2_map."
+    read_only: true
+    validator: validate_global_frame_id
+
+  link_namespace:
+    type: string
+    default_value: ""
+    description: "Link namespace, including the trailing slash."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: link_namespace_
+
+  mode:
+    type: string
+    default_value: "STEREO"
+    description: "ORB-SLAM2 mode, either MONOCULAR, STEREO, RGBD, or IRD."
+    constraints: "Changes require system restart."
+    read_only: false
+    validator: validate_mode
+
+  preconvert_frames:
+    type: bool
+    default_value: true
+    description: "Preconverts the frames to grayscale in the camera subscriber callback."
+    constraints: "Activate this is the camera frames are color and the system's rate is evidently lower than the camera's rate."
+    read_only: false
+    var_name: preconvert_frames_
+
+  publish_map:
+    type: bool
+    default_value: false
+    description: "Publishes the ORB-SLAM2 internal map as a PointCloud2."
+    constraints: "The map is sparse and not useful for scopes other than debugging, so it's published w.r.t. the local or the global frame only."
+    read_only: false
+    var_name: publish_map_
+
+  publish_tf:
+    type: bool
+    default_value: true
+    description: "Publishes the tf from the local or global frame to the base_link frame."
+    constraints: ""
+    read_only: false
+    var_name: publish_tf_
+
+  orb2_config_path:
+    type: string
+    default_value: "/home/neo/workspace/src/ORB-SLAM2/Config/Zed-M-Stereo.yaml"
+    description: "Path to the ORB-SLAM2 configuration file."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: orb2_config_path_
+
+  save_map:
+    type: bool
+    default_value: false
+    description: "Saves the map to a file when the system is shut down."
+    constraints: "Can be changed only when the system is not active; the map file name must be specified in the main config file; if existing, it will be preloaded and overwritten."
+    read_only: false
+    validator: validate_save_map
+
+  start_localization:
+    type: bool
+    default_value: false
+    description: "Starts the system in localization mode."
+    constraints: "Cannot be changed."
+    read_only: true
+    var_name: start_localization_
+
+  set_gravity_as_origin:
+    type: bool
+    default_value: false
+    description: "Makes pose aligned with the gravity vector/ground plane."
+    constraints: "Cannot be changed, requires a camera with an IMU and a local frame aligned to ground."
+    read_only: true
+    var_name: set_gravity_as_origin_
+
+  subscriber_depth:
+    type: integer
+    default_value: 10
+    min_value: 1
+    max_value: 200
+    step: 1
+    description: "Depth of the subscriber queue."
+    constraints: "Changes require system restart."
+    read_only: false
+
+  tracking_cpu:
+    type: integer
+    default_value: -1
+    min_value: -1
+    max_value: 255
+    step: 1
+    description: "Tracking thread CPU."
+    constraints: "-1 means no affinity."
+    read_only: true
+    var_name: tracking_cpu_
+
+  transport:
+    type: string
+    default_value: "raw"
+    description: "ROS image transport type, either raw or compressed."
+    constraints: "Changes require system restart."
+    read_only: false
+    validator: validate_transport
+
+  verbose:
+    type: bool
+    default_value: false
+    description: "Activates verbose output."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: verbose_
+
+  vocabulary_path:
+    type: string
+    default_value: "/home/neo/workspace/src/ORB-SLAM2/Vocabulary/orb_mur.fbow"
+    description: "Path to the ORB vocabulary file."
+    constraints: "Changes require system restart."
+    read_only: false
+    var_name: vocabulary_path_
