@@ -1,0 +1,21 @@
+# Uncompressed vocabulary files
+Vocabulary/*
+!Vocabulary/orb_mur.fbow.tar.gz
+
+# Stuff
+KeyFrameTrajectory.txt
+depth/
+infrared/
+CameraTrajectory*.txt
+*.asv
+*~
+*.dat
+*.bin
+*.map
+*.log
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.mapfile
+core*
