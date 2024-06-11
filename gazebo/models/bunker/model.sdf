@@ -1,0 +1,920 @@
+<sdf version='1.9'>
+  <model name='bunker_description'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.0212410555532523 0.00475458359568469 -0.127580557949736 0 0 0</pose>
+        <mass>22</mass>
+        <inertia>
+          <ixx>0.60771616668497896</ixx>
+          <ixy>1.9217819399614701e-05</ixy>
+          <ixz>-0.036532069356182001</ixz>
+          <iyy>1.70041426855404</iyy>
+          <iyz>2.1696312200726599e-05</iyz>
+          <izz>1.8423235193518499</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0.53 -0.392 -0.358 1.57 2.168404344971009e-19 3.14</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://bunker_description/meshes/BUNKER.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0.53 -0.392 -0.358 1.57 2.168404344971009e-19 3.14</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://bunker_description/meshes/BUNKER.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.625 0.625 0.625 1</diffuse>
+          <ambient>0.625 0.625 0.625 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel1.1_jont' type='revolute'>
+      <pose relative_to='base_link'>0.37551 0.3495 -0.22305 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel1.1_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel1.1_Link'>
+      <pose relative_to='wheel1.1_jont'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.74279013442913e-08 5.87093572021469e-08 -0.07200000000000011 0 0 0</pose>
+        <mass>0.19032828790100201</mass>
+        <inertia>
+          <ixx>6.5875096398139405e-05</ixx>
+          <ixy>-1.46558944641469e-09</ixy>
+          <ixz>-8.3496733171885896e-12</ixz>
+          <iyy>6.5879598467151701e-05</iyy>
+          <iyz>-2.4786046130206001e-12</iyz>
+          <izz>0.000112721820875598</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel1.1_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel1.1_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel1.2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.29039 0.3495 -0.28104 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel1.2_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel1.2_Link'>
+      <pose relative_to='wheel1.2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.66533453693773e-16 4.16333634234434e-17 -0.0720000000000002 0 0 0</pose>
+        <mass>0.27119281168725101</mass>
+        <inertia>
+          <ixx>0.00017957425901848101</ixx>
+          <ixy>1.1578949812054901e-20</ixy>
+          <ixz>1.3563351843978e-21</ixz>
+          <iyy>0.00017957425901848101</iyy>
+          <iyz>6.0369822309622006e-23</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel1.2_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel1.2_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel1.3_joint' type='revolute'>
+      <pose relative_to='base_link'>0.29603 0.3495 -0.08699999999999999 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel1.3_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel1.3_Link'>
+      <pose relative_to='wheel1.3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>3.44025652177504e-05 -2.66346274915008e-05 -0.07015041494736959 0 0 0</pose>
+        <mass>0.24583502833093299</mass>
+        <inertia>
+          <ixx>0.000105254202004996</ixx>
+          <ixy>1.3232802988632199e-08</ixy>
+          <ixz>3.8429458910269303e-11</ixz>
+          <iyy>0.000105248656147198</iyy>
+          <iyz>-1.4115561191491499e-11</iyz>
+          <izz>0.00017328077174575801</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel1.3_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel1.3_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel1_joint' type='revolute'>
+      <pose relative_to='base_link'>0.44403 0.3495 -0.12853 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel1_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel1_Link'>
+      <pose relative_to='wheel1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 -1.38777878078145e-17 -0.0719999999999999 0 0 0</pose>
+        <mass>0.39203421996811899</mass>
+        <inertia>
+          <ixx>0.00037844053011638098</ixx>
+          <ixy>5.6082273680566097e-21</ixy>
+          <ixz>3.0420780282242502e-20</ixz>
+          <iyy>0.00037844053011638098</iyy>
+          <iyz>-7.5662698035647396e-21</iyz>
+          <izz>0.00071015051882089401</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel1_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel1_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel1_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel2.1_joint' type='revolute'>
+      <pose relative_to='base_link'>0.37551 -0.3495 -0.22305 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel2.1_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel2.1_Link'>
+      <pose relative_to='wheel2.1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.74279017328693e-08 5.87093572160247e-08 0.0720000000000002 0 0 0</pose>
+        <mass>0.19032828790100201</mass>
+        <inertia>
+          <ixx>6.5875096398139405e-05</ixx>
+          <ixy>-1.4655894464276099e-09</ixy>
+          <ixz>-8.3496733234302796e-12</ixz>
+          <iyy>6.5879598467151701e-05</iyy>
+          <iyz>-2.4786045992951098e-12</iyz>
+          <izz>0.000112721820875598</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel2.1_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel2.1_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel2.2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.29039 -0.3495 -0.28104 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel2.2_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel2.2_Link'>
+      <pose relative_to='wheel2.2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.38777878078145e-16 -4.85722573273506e-17 0.0720000000000003 0 0 0</pose>
+        <mass>0.27119281168725001</mass>
+        <inertia>
+          <ixx>0.00017957425901848</ixx>
+          <ixy>6.2896038622665701e-21</ixy>
+          <ixz>2.1401078866476201e-21</ixz>
+          <iyy>0.00017957425901848</iyy>
+          <iyz>1.2770965572471599e-22</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel2.2_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel2.2_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel2.3_joint' type='revolute'>
+      <pose relative_to='base_link'>0.29603 -0.3495 -0.08699999999999999 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel2.3_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel2.3_Link'>
+      <pose relative_to='wheel2.3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>3.51083051564616e-05 -2.7181014665284e-05 0.07092767702047691 0 0 0</pose>
+        <mass>0.24089330308683601</mass>
+        <inertia>
+          <ixx>0.00010503511885250799</ixx>
+          <ixy>1.32328029886296e-08</ixy>
+          <ixz>3.8429458911016098e-11</ixz>
+          <iyy>0.00010502957299471</iyy>
+          <iyz>-1.41155611875745e-11</iyz>
+          <izz>0.00017298179736849</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel2.3_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel2.3_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.44403 -0.3495 -0.12853 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel2_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel2_Link'>
+      <pose relative_to='wheel2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.66533453693773e-16 0 0.07199999999999999 0 0 0</pose>
+        <mass>0.39203421996811899</mass>
+        <inertia>
+          <ixx>0.00037844053011638098</ixx>
+          <ixy>3.3730221786378099e-21</ixy>
+          <ixz>2.71827270955143e-20</ixz>
+          <iyy>0.00037844053011638098</iyy>
+          <iyz>-7.3282164489315699e-21</iyz>
+          <izz>0.00071015051882089401</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel2_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel2_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel2_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel3.1_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.23111 0.3495 -0.27671 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel3.1_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel3.1_Link'>
+      <pose relative_to='wheel3.1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>5.55111512312578e-17 5.55111512312578e-17 -0.0720000000000002 0 0 0</pose>
+        <mass>0.27119281168725101</mass>
+        <inertia>
+          <ixx>0.00017957425901848101</ixx>
+          <ixy>-1.7382434398244201e-20</ixy>
+          <ixz>-2.53159654382751e-21</ixz>
+          <iyy>0.00017957425901848101</iyy>
+          <iyz>-3.1374144987851501e-21</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel3.1_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel3.1_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel3.2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.043885 0.3495 -0.27671 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel3.2_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel3.2_Link'>
+      <pose relative_to='wheel3.2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>7.58128369110489e-17 7.63278329429795e-17 -0.0720000000000003 0 0 0</pose>
+        <mass>0.27119281168725001</mass>
+        <inertia>
+          <ixx>0.00017957425901848</ixx>
+          <ixy>9.8292905245842598e-22</ixy>
+          <ixz>1.1099038813529099e-21</ixz>
+          <iyy>0.00017957425901848</iyy>
+          <iyz>-4.8132232707912096e-21</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel3.2_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel3.2_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel3.3_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.28597 0.3495 -0.08699999999999999 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel3.3_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel3.3_Link'>
+      <pose relative_to='wheel3.3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.37732703020532e-08 -5.29206664124648e-05 -0.07015017001516829 0 0 0</pose>
+        <mass>0.24583605497611899</mass>
+        <inertia>
+          <ixx>0.00010526494440973799</ixx>
+          <ixy>7.9823176162890196e-12</ixy>
+          <ixz>6.8040027360547196e-11</ixz>
+          <iyy>0.00010523834426068501</iyy>
+          <iyz>-2.7210631778196199e-11</iyz>
+          <izz>0.00017328103933539601</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel3.3_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel3.3_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel3_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.38871 0.295 -0.19381 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel3_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel3_Link'>
+      <pose relative_to='wheel3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.5143569731535e-10 7.07767178198537e-16 -0.0246054820762604 0 0 0</pose>
+        <mass>1.3582829644586201</mass>
+        <inertia>
+          <ixx>0.0023245601377552298</ixx>
+          <ixy>-1.61343020248111e-09</ixy>
+          <ixz>-4.5670735364334999e-13</ixz>
+          <iyy>0.0023245656421372698</iyy>
+          <iyz>-1.36036258272812e-18</iyz>
+          <izz>0.0030834778703064899</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel3_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel3_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel3_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel4.1_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.23111 -0.3495 -0.27671 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel4.1_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel4.1_Link'>
+      <pose relative_to='wheel4.1_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-1.11022302462516e-16 -5.55111512312578e-17 0.0720000000000002 0 0 0</pose>
+        <mass>0.27119281168725101</mass>
+        <inertia>
+          <ixx>0.00017957425901848101</ixx>
+          <ixy>-7.9339902430209297e-21</ixy>
+          <ixz>-2.1334204457048702e-21</ixz>
+          <iyy>0.00017957425901848101</iyy>
+          <iyz>-3.2362437397414899e-21</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel4.1_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel4.1_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.1_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel4.2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.043885 -0.3495 -0.27671 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel4.2_Link</child>
+      <axis>
+        <xyz>0 0 -1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel4.2_Link'>
+      <pose relative_to='wheel4.2_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-7.644980568738409e-17 -4.85722573273506e-17 0.0720000000000004 0 0 0</pose>
+        <mass>0.27119281168725001</mass>
+        <inertia>
+          <ixx>0.00017957425901848</ixx>
+          <ixy>6.3005828905746e-22</ixy>
+          <ixz>1.1753358195073999e-22</ixz>
+          <iyy>0.00017957425901848</iyy>
+          <iyz>-3.2734709965311099e-21</iyz>
+          <izz>0.00033259453473213901</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel4.2_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel4.2_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.2_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel4.3_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.28597 -0.3495 -0.08699999999999999 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel4.3_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel4.3_Link'>
+      <pose relative_to='wheel4.3_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>1.37732700244975e-08 -5.29206664124926e-05 0.0701152686893121 0 0 0</pose>
+        <mass>0.24583605497611899</mass>
+        <inertia>
+          <ixx>0.00010526494440973799</ixx>
+          <ixy>7.9823176185871907e-12</ixy>
+          <ixz>6.8040027376435694e-11</ixz>
+          <iyy>0.00010523834426068501</iyy>
+          <iyz>-2.7210631779736099e-11</iyz>
+          <izz>0.00017328103933539601</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel4.3_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel4.3_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4.3_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='wheel4_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.38871 -0.295 -0.19381 1.5708 4.235164736271502e-22 3.141585307179587</pose>
+      <parent>base_link</parent>
+      <child>wheel4_Link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-180</lower>
+          <upper>180</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel4_Link'>
+      <pose relative_to='wheel4_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>5.55111512312578e-17 1.51436273243544e-10 0.0245928853369881 0 0 0</pose>
+        <mass>1.3582829644586201</mass>
+        <inertia>
+          <ixx>0.0023245656421372698</ixx>
+          <ixy>-1.6134302023684e-09</ixy>
+          <ixz>-3.6739170320808201e-19</ixz>
+          <iyy>0.0023245601377552298</iyy>
+          <iyz>-4.5670749479621601e-13</iyz>
+          <izz>0.0030834778703064899</izz>
+        </inertia>
+      </inertial>
+      <collision name='wheel4_Link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4_Link.STL</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='wheel4_Link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://bunker_description/meshes/wheel4_Link.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

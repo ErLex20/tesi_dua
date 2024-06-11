@@ -1,0 +1,262 @@
+<sdf version='1.9'>
+  <model name='axis_camera'>
+    <link name='wall_link'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>2</mass>
+        <inertia>
+          <ixx>0.053333333333333337</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.053333333333333337</iyy>
+          <iyz>0</iyz>
+          <izz>0.053333333333333337</izz>
+        </inertia>
+      </inertial>
+      <gravity>false</gravity>
+    </link>
+    <joint name='pan_joint' type='revolute'>
+      <pose relative_to='wall_link'>0 0 0 0 0 0</pose>
+      <parent>wall_link</parent>
+      <child>pan_link</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-600.27999999999997</lower>
+          <upper>600.27999999999997</upper>
+          <effort>1000</effort>
+          <velocity>30</velocity>
+        </limit>
+        <dynamics>
+          <damping>0</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='pan_link'>
+      <pose relative_to='pan_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>9.9999999999999995e-07</mass>
+        <inertia>
+          <ixx>1.6666666666666671e-11</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.6666666666666671e-11</iyy>
+          <iyz>0</iyz>
+          <izz>1.6666666666666671e-11</izz>
+        </inertia>
+      </inertial>
+      <gravity>false</gravity>
+    </link>
+    <joint name='tilt_joint' type='revolute'>
+      <pose relative_to='pan_link'>0 0 0 0 0 0</pose>
+      <parent>pan_link</parent>
+      <child>tilt_link</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-600.27999999999997</lower>
+          <upper>600.27999999999997</upper>
+          <effort>1000</effort>
+          <velocity>30</velocity>
+        </limit>
+        <dynamics>
+          <damping>0</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='tilt_link'>
+      <pose relative_to='tilt_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>9.9999999999999995e-07</mass>
+        <inertia>
+          <ixx>1.6666666666666671e-11</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.6666666666666671e-11</iyy>
+          <iyz>0</iyz>
+          <izz>1.6666666666666671e-11</izz>
+        </inertia>
+      </inertial>
+      <gravity>false</gravity>
+    </link>
+    <joint name='chassis_joint' type='fixed'>
+      <pose relative_to='tilt_link'>0 0 0 0 0 0</pose>
+      <parent>tilt_link</parent>
+      <child>chassis_link</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.20000000000000001</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='chassis_link'>
+      <pose relative_to='chassis_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>9.9999999999999995e-07</mass>
+        <inertia>
+          <ixx>1.6666666666666671e-11</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.6666666666666671e-11</iyy>
+          <iyz>0</iyz>
+          <izz>1.6666666666666671e-11</izz>
+        </inertia>
+      </inertial>
+      <visual name='chassis_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.15 0.15 0.15</size>
+          </box>
+        </geometry>
+      </visual>
+      <gravity>false</gravity>
+    </link>
+    <joint name='camera_joint' type='fixed'>
+      <pose relative_to='chassis_link'>0.075 0 0 0 0 0</pose>
+      <parent>chassis_link</parent>
+      <child>camera_link</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.20000000000000001</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='camera_link'>
+      <pose relative_to='camera_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>9.9999999999999995e-07</mass>
+        <inertia>
+          <ixx>1.6666666666666671e-11</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.6666666666666671e-11</iyy>
+          <iyz>0</iyz>
+          <izz>1.6666666666666671e-11</izz>
+        </inertia>
+      </inertial>
+      <visual name='camera_link_visual'>
+        <pose>0 0 0 0 1.570796326794897 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.0050000000000000001</length>
+            <radius>0.02</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>0.375 0.375 0.375 1</diffuse>
+          <ambient>0.375 0.375 0.375 1</ambient>
+        </material>
+      </visual>
+      <gravity>false</gravity>
+      <sensor name='camera' type='camera'>
+        <camera>
+          <horizontal_fov>1.9198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.10000000000000001</near>
+            <far>25</far>
+          </clip>
+        </camera>
+        <always_on>true</always_on>
+        <update_rate>30</update_rate>
+        <visualize>false</visualize>
+        <topic>right_camera</topic>
+        <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>axis_camera</namespace>
+          </ros>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name='imu_joint' type='fixed'>
+      <pose relative_to='chassis_link'>0 0 0 0 0 0</pose>
+      <parent>chassis_link</parent>
+      <child>imu_link</child>
+      <axis>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-10000000000000000</lower>
+          <upper>10000000000000000</upper>
+        </limit>
+      </axis>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.20000000000000001</erp>
+          </limit>
+        </ode>
+      </physics>
+    </joint>
+    <link name='imu_link'>
+      <pose relative_to='imu_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>9.9999999999999995e-07</mass>
+        <inertia>
+          <ixx>1.6666666666666671e-11</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.6666666666666671e-11</iyy>
+          <iyz>0</iyz>
+          <izz>1.6666666666666671e-11</izz>
+        </inertia>
+      </inertial>
+      <gravity>false</gravity>
+      <sensor name='axis_imu_sensor' type='imu'>
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+      </sensor>
+    </link>
+    <static>false</static>
+    <plugin name='gazebo_ros2_control' filename='libgazebo_ros2_control.so'>
+      <parameters>/home/neo/workspace/install/gazebo_simulation/share/gazebo_simulation/config/axis_camera_controller.yaml</parameters>
+    </plugin>
+  </model>
+</sdf>
