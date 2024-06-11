@@ -9,12 +9,12 @@
 #--------------------------------------------------------------------------------------------
 # Baseline: 0.120107 [m]
 # Focal lengths
-Camera.fx: 261.075042724
-Camera.fy: 261.075042724
+Camera.fx: 224.08123848380646
+Camera.fy: 224.08123848380646
 
 # Principal point coordinates
-Camera.cx: 336.756042480
-Camera.cy: 186.800491333
+Camera.cx: 320.5
+Camera.cy: 240.5
 
 # Distortion coefficients
 Camera.k1: 0.0
@@ -23,14 +23,14 @@ Camera.p1: 0.0
 Camera.p2: 0.0
 
 # Image size
-Camera.width: 672
-Camera.height: 376
+Camera.width: 640
+Camera.height: 480
 
 # Frames per second
-Camera.fps: 30.0
+Camera.fps: 5.0
 
 # Stereo baseline times fx (Camera.fx * baseline)
-Camera.bf: 31.356945037841797
+Camera.bf: 26.9137
 
 # Color order of the images (0: BGR, 1: RGB, ignored if images are grayscale)
 # WARNING: In STEREO mode, L/R frames must have the same encoding.
