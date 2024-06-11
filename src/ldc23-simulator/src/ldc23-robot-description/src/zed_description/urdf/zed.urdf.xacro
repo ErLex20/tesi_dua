@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:ignition="http://ignitionrobotics.org/schema" name="zed">
+
+  <!-- ZED Mini -->
+  <xacro:property name="zedm_mass" value = "0.063"/>
+  <xacro:property name="zedm_x" value = "0.1245"/>
+  <xacro:property name="zedm_y" value = "0.0305"/>
+  <xacro:property name="zedm_z" value = "0.0265"/>
+  <xacro:property name="zedm_baseline" value = "0.063"/>
+  <xacro:property name="zedm_image_hfov" value = "${pi/2}"/>
+  <xacro:property name="zedm_image_width" value = "640"/>
+  <xacro:property name="zedm_image_height" value = "480"/>
+  <xacro:property name="zedm_image_clip_near" value = "0.1"/>
+  <xacro:property name="zedm_image_clip_far" value = "25"/>
+  <xacro:property name="zedm_image_update_rate" value = "30"/>
+  <xacro:property name="zedm_image_topic_right" value = "right_zed"/>
+  <xacro:property name="zedm_image_topic_left" value = "left_zed"/>
+  <xacro:property name="zedm_imu_topic" value = "imu_zed"/>
+  <xacro:property name="zedm_imu_update_rate" value = "100"/>
+  <xacro:property name="zedm_pose_topic" value = "slam/zedm_driver/base_link_odometry"/>
+
+  <!-- ZED2i -->
+  <xacro:property name="zed2i_mass" value = "0.001"/>
+  <xacro:property name="zed2i_x" value = "0.03025"/>
+  <xacro:property name="zed2i_y" value = "0.175"/>
+  <xacro:property name="zed2i_z" value = "0.0373"/>
+  <xacro:property name="zed2i_baseline" value = "0.12"/>
+  <xacro:property name="zed2i_image_hfov" value = "1.9198"/>
+  <xacro:property name="zed2i_image_width" value = "640"/>
+  <xacro:property name="zed2i_image_height" value = "480"/>
+  <xacro:property name="zed2i_image_clip_near" value = "0.1"/>
+  <xacro:property name="zed2i_image_clip_far" value = "25"/>
+  <xacro:property name="zed2i_image_update_rate" value = "30"/>
+  <xacro:property name="zed2i_image_topic_right" value = "right_zed"/>
+  <xacro:property name="zed2i_image_topic_left" value = "left_zed"/>
+  <xacro:property name="zed2i_imu_topic" value = "imu_zed"/>
+  <xacro:property name="zed2i_imu_update_rate" value = "100"/>
+  <xacro:property name="zed2i_pose_topic" value = "slam/zed_2i_driver/base_link_odometry"/>
+
+  <!-- Function -->
+  <xacro:macro name="zed">
+    <!-- ZED Mini -->
+    <xacro:if value="${use_zedm}">
+      <link name="${namespace}/zedm_center_link">
+        <xacro:box_inertial m="${zedm_mass}" x="${zedm_y}" y="${zedm_x}" z="${zedm_z}"/>
+        <visual>
+          <origin xyz="0 0 0" rpy="-${pi/2} 0 ${pi/2}"/>
+          <geometry>
+            <mesh filename="model://stanis/meshes/zedm.dae" scale="1 1 1"/>
+          </geometry>
+        </visual>
+      </link>
+      <gazebo reference="${namespace}/zedm_center_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="zedm_center_joint" type="fixed">
+        <xacro:if value="${namespace == 'seppia'}">
+          <parent link="${namespace}/chassis_link"/>
+        </xacro:if>
+        <xacro:unless value="${namespace == 'seppia'}">
+          <parent link="${namespace}/base_link"/>
+        </xacro:unless>
+        <child link="${namespace}/zedm_center_link"/>
+        <origin rpy="0 -${zedm_tilt} 0" xyz="${zedm_to_base_x} ${zedm_to_base_y} ${zedm_to_base_z}"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zedm_center_joint"/>
+      <link name="${namespace}/zedm_right_link">
+        <xacro:eps_inertial/>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <cylinder length="0.001" radius="0.008"/>
+          </geometry>
+        </visual>
+      </link>
+      <gazebo reference="${namespace}/zedm_right_link">
+        <sensor name="zedm_right_camera" type="camera">
+          <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+          <camera>
+            <horizontal_fov>${zedm_image_hfov}</horizontal_fov>
+            <image>
+              <width>${zedm_image_width}</width>
+              <height>${zedm_image_height}</height>
+            </image>
+            <clip>
+              <near>${zedm_image_clip_near}</near>
+              <far>${zedm_image_clip_far}</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>${zedm_image_update_rate}</update_rate>
+          <visualize>${visualize_sensors}</visualize>
+          <topic>${zedm_image_topic_right}</topic>
+          <plugin name="zedm_right_camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+            </ros>
+          </plugin>
+        </sensor>
+      </gazebo>
+      <joint name="zedm_right_joint" type="fixed">
+        <parent link="${namespace}/zedm_center_link"/>
+        <child link="${namespace}/zedm_right_link"/>
+        <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${zedm_y/4} -${zedm_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zedm_right_joint"/>
+      <link name="${namespace}/zedm_link">
+        <xacro:eps_inertial/>
+      </link>
+      <gazebo reference="${namespace}/zedm_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="zedm_joint" type="fixed">
+        <parent link="${namespace}/zedm_center_link"/>
+        <child link="${namespace}/zedm_link"/>
+        <origin rpy="0 0 0" xyz="${zedm_y/4} ${zedm_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zedm_joint"/>
+      <link name="${namespace}/orb2_link">
+        <xacro:eps_inertial/>
+      </link>
+      <gazebo reference="${namespace}/orb2_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="orb2_joint" type="fixed">
+        <parent link="${namespace}/zedm_link"/>
+        <child link="${namespace}/orb2_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="orb2_joint"/>
+      <link name="${namespace}/zedm_left_link">
+        <xacro:eps_inertial/>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <cylinder length="0.001" radius="0.008"/>
+          </geometry>
+        </visual>
+      </link>
+      <gazebo reference="${namespace}/zedm_left_link">
+        <sensor name="zedm_left_camera" type="depth">
+          <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+          <camera>
+            <horizontal_fov>${zedm_image_hfov}</horizontal_fov>
+            <image>
+              <width>${zedm_image_width}</width>
+              <height>${zedm_image_height}</height>
+            </image>
+            <clip>
+              <near>${zedm_image_clip_near}</near>
+              <far>${zedm_image_clip_far}</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>${zedm_image_update_rate}</update_rate>
+          <visualize>${visualize_sensors}</visualize>
+          <topic>${zedm_image_topic_left}</topic>
+          <namespace>${namespace}</namespace>
+          <plugin name="zedm_left_camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+              <frame_name>${namespace}/lidar_link</frame_name>
+            </ros>
+          </plugin>
+        </sensor>
+      </gazebo>
+      <joint name="zedm_left_joint" type="fixed">
+        <parent link="${namespace}/zedm_center_link"/>
+        <child link="${namespace}/zedm_left_link"/>
+        <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${zedm_y/4} ${zedm_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zedm_left_joint"/>
+      <link name="${namespace}/zedm_imu_link">
+        <xacro:eps_inertial/>
+      </link>
+      <gazebo reference="${namespace}/zedm_imu_link">
+        <sensor name="zedm_imu" type="imu">
+          <always_on>true</always_on>
+          <update_rate>${zedm_imu_update_rate}</update_rate>
+          <plugin name="zedm_imu" filename="libgazebo_ros_imu_sensor.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+              <remapping>~/out:=${zedm_imu_topic}</remapping>
+            </ros>
+            <initialOrientationAsReference>false</initialOrientationAsReference>
+            <gaussianNoise>0.0</gaussianNoise>
+            <xyzOffset>0 0 0</xyzOffset>
+            <rpyOffset>0 0 0</rpyOffset>
+          </plugin>
+        </sensor>
+      </gazebo>
+      <joint name="zedm_imu_joint" type="fixed">
+        <parent link="${namespace}/zedm_link"/>
+        <child link="${namespace}/zedm_imu_link"/>
+        <origin rpy="0 0 0" xyz="${zedm_imu_to_left_x} ${zedm_imu_to_left_y} ${zedm_imu_to_left_z}"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zedm_imu_joint"/>
+    </xacro:if>
+
+    <!-- ZED2i -->
+    <xacro:unless value="${use_zedm}">
+      <link name="${namespace}/zed2i_center_link">
+        <xacro:box_inertial m="${zed2i_mass}" x="${zed2i_x}" y="${zed2i_y}" z="${zed2i_z}"/>
+        <visual>
+          <origin xyz="0 0 0" rpy="-${pi/2} 0 ${pi/2}"/>
+          <geometry>
+            <mesh filename="model://seppia/meshes/ZED2i.dae"/>
+          </geometry>
+        </visual>
+      </link>
+      <gazebo reference="${namespace}/zed2i_center_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="zed2i_center_joint" type="fixed">
+        <xacro:if value="${namespace == 'seppia'}">
+          <parent link="${namespace}/chassis_link"/>
+        </xacro:if>
+        <xacro:unless value="${namespace == 'seppia'}">
+          <parent link="${namespace}/base_link"/>
+        </xacro:unless>
+        <child link="${namespace}/zed2i_center_link"/>
+        <origin rpy="0 -${zed2i_tilt} 0" xyz="${zed2i_to_chassis_x} ${zed2i_to_chassis_y} ${zed2i_to_chassis_z}"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zed2i_center_joint"/>
+      <link name="${namespace}/zed2i_right_link">
+        <xacro:eps_inertial/>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <cylinder length="0.001" radius="0.008"/>
+          </geometry>
+        </visual>
+      </link>
+      <!-- <gazebo reference="${namespace}/zed2i_right_link">
+        <sensor name="zed2i_right_camera" type="camera">
+          <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+          <camera>
+            <horizontal_fov>${zed2i_image_hfov}</horizontal_fov>
+            <image>
+              <width>${zed2i_image_width}</width>
+              <height>${zed2i_image_height}</height>
+            </image>
+            <clip>
+              <near>${zed2i_image_clip_near}</near>
+              <far>${zed2i_image_clip_far}</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>${zed2i_image_update_rate}</update_rate>
+          <visualize>${visualize_sensors}</visualize>
+          <topic>${zed2i_image_topic_right}</topic>
+          <plugin name="zed2i_right_camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+            </ros>
+          </plugin>
+        </sensor>
+      </gazebo> -->
+      <joint name="zed2i_right_joint" type="fixed">
+        <parent link="${namespace}/zed2i_center_link"/>
+        <child link="${namespace}/zed2i_right_link"/>
+        <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${zed2i_z/2} -${zed2i_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zed2i_right_joint"/>
+      <link name="${namespace}/zed2i_link">
+        <xacro:eps_inertial/>
+      </link>
+      <gazebo reference="${namespace}/zed2i_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="zed2i_joint" type="fixed">
+        <parent link="${namespace}/zed2i_center_link"/>
+        <child link="${namespace}/zed2i_link"/>
+        <origin rpy="0 0 0" xyz="${zed2i_z/2} ${zed2i_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zed2i_joint"/>
+      <link name="${namespace}/orb2_link">
+        <xacro:eps_inertial/>
+      </link>
+      <gazebo reference="${namespace}/orb2_link">
+        <collision>
+          <surface>
+            <contact>
+              <ode>
+                <min_depth>${min_depth}</min_depth>
+                <max_vel>${max_vel}</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+      </gazebo>
+      <joint name="orb2_joint" type="fixed">
+        <parent link="${namespace}/zed2i_link"/>
+        <child link="${namespace}/orb2_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="orb2_joint"/>
+      <link name="${namespace}/zed2i_left_link">
+        <xacro:eps_inertial/>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <cylinder length="0.001" radius="0.008"/>
+          </geometry>
+        </visual>
+      </link>
+      <gazebo reference="${namespace}/zed2i_left_link">
+        <sensor name="zed2i_left_camera" type="camera">
+          <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+          <camera>
+            <horizontal_fov>${zed2i_image_hfov}</horizontal_fov>
+            <image>
+              <width>${zed2i_image_width}</width>
+              <height>${zed2i_image_height}</height>
+            </image>
+            <clip>
+              <near>${zed2i_image_clip_near}</near>
+              <far>${zed2i_image_clip_far}</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>${zed2i_image_update_rate}</update_rate>
+          <visualize>${visualize_sensors}</visualize>
+          <topic>${zed2i_image_topic_left}</topic>
+          <plugin name="zed2i_left_camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+            </ros>
+          </plugin>
+        </sensor>
+      </gazebo>
+      <joint name="zed2i_left_joint" type="fixed">
+        <parent link="${namespace}/zed2i_center_link"/>
+        <child link="${namespace}/zed2i_left_link"/>
+        <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${zed2i_z/2} ${zed2i_baseline/2} 0"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zed2i_left_joint"/>
+      <link name="${namespace}/zed2i_imu_link">
+        <xacro:eps_inertial/>
+      </link>
+      <!-- <gazebo reference="${namespace}/zed2i_imu_link">
+        <sensor name="zed2i_imu" type="imu">
+          <always_on>true</always_on>
+          <update_rate>${zed2i_imu_update_rate}</update_rate>
+          <plugin name="zed2i_imu" filename="libgazebo_ros_imu_sensor.so">
+            <ros>
+              <namespace>${namespace}</namespace>
+              <remapping>~/out:=${zed2i_imu_topic}</remapping>
+            </ros>
+            <initialOrientationAsReference>true</initialOrientationAsReference>
+            <gaussianNoise>0.0</gaussianNoise>
+            <xyzOffset>0 0 0</xyzOffset>
+            <rpyOffset>0 0 0</rpyOffset>
+          </plugin>
+        </sensor>
+      </gazebo> -->
+      <joint name="zed2i_imu_joint" type="fixed">
+        <parent link="${namespace}/zed2i_link"/>
+        <child link="${namespace}/zed2i_imu_link"/>
+        <origin rpy="0 0 0" xyz="${zed2i_imu_to_left_x} ${zed2i_imu_to_left_y} ${zed2i_imu_to_left_z}"/>
+      </joint>
+      <xacro:fixed_joint_params joint="zed2i_imu_joint"/>
+    </xacro:unless>
+
+  </xacro:macro>
+
+</robot>

@@ -2,7 +2,7 @@
   ros__parameters:
     autostart: true
     base_topic_name: camera
-    best_effort_qos: true
+    best_effort_qos: false
     brightness: 0.0
     camera_calibration_file: file:///home/neo/workspace/src/zed_usb_driver/config/camera.yaml
     camera_calibration_rect: file:///home/neo/workspace/src/zed_usb_driver/config/mini.conf

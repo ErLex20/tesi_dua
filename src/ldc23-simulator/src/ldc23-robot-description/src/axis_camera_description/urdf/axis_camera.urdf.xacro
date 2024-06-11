@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:ignition="http://ignitionrobotics.org/schema" name="axis_camera">
+
+<!-- Xacro parameters -->
+  <xacro:property name="namespace" value="axis_camera"/>
+
+  <!-- Camera body -->
+  <xacro:property name="camera_dim" value = "0.15"/>
+  <xacro:property name="camera_elevation" value = "2.0"/>
+
+  <!-- Dynamics and simulation -->
+  <xacro:property name="camera_mass" value="0.5"/>
+
+  <xacro:property name="eps_mass" value = "0.000001"/>
+  <xacro:property name="eps_dim" value = "0.01"/>
+
+  <xacro:property name="damping" value = "0.0"/>
+  <xacro:property name="friction" value = "0.0"/>
+
+  <xacro:property name="mu" value = "0.0"/>
+  <xacro:property name="mu2" value = "0.0"/>
+
+  <xacro:property name="sensor_offset" value = "0.0"/>
+
+  <xacro:property name="visualize_sensors" value = "false"/>
+
+  <!-- Sensors -->
+  <xacro:property name="camera_hfov" value = "1.9198"/> <!-- -->
+  <xacro:property name="camera_width" value = "640"/>
+  <xacro:property name="camera_height" value = "480"/>
+  <xacro:property name="camera_clip_near" value = "0.1"/>
+  <xacro:property name="camera_clip_far" value = "25"/>
+  <xacro:property name="camera_update_rate" value = "30"/>
+  <xacro:property name="camera_topic_right" value = "right_camera"/>
+
+<!-- Xacro functions -->
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+             iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+             izz="${m*r*r/2}" />
+  </xacro:macro>
+
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertia ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
+             iyy="${m*(x*x+z*z)/12}" iyz = "0"
+             izz="${m*(x*x+y*y)/12}" />
+  </xacro:macro>
+
+  <xacro:macro name="box_inertial" params="m x y z">
+    <inertial>
+      <mass value="${m}"/>
+      <xacro:box_inertia m="${m}" x="${x}" y="${y}" z="${z}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertial" params="m r h">
+    <inertial>
+      <mass value="${m}"/>
+      <xacro:cylinder_inertia m="${m}" r="${r}" h="${h}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="eps_inertial">
+    <inertial>
+      <mass value="${eps_mass}"/>
+      <xacro:box_inertia m="${eps_mass}" x="${eps_dim}" y="${eps_dim}" z="${eps_dim}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="fixed_joint_params" params="joint">
+    <gazebo reference="${joint}">
+      <preserveFixedJoint>true</preserveFixedJoint>
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
+  </xacro:macro>
+
+<!-- Body parts -->
+  <gazebo>
+    <static>false</static>
+  </gazebo>
+  <!-- Base link -->
+  <link name="wall_link">
+    <xacro:box_inertial m="2" x="0.4" y="0.4" z="0.4"/>
+  </link>
+  <gazebo reference="wall_link">
+    <gravity>false</gravity>
+  </gazebo>
+
+  <!-- Camera box -->
+  <link name="pan_link">
+    <xacro:eps_inertial/>
+  </link>
+  <gazebo reference="pan_link">
+    <gravity>false</gravity>
+  </gazebo>
+  <joint name="pan_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <parent link="wall_link"/>
+    <child link="pan_link"/>
+    <dynamics damping="${damping}" friction="${friction}"/>
+    <limit effort="1000" lower="-600.28" upper="600.28" velocity="30"/>
+  </joint>
+
+  <link name="tilt_link">
+    <xacro:eps_inertial/>
+  </link>
+  <gazebo reference="tilt_link">
+    <gravity>false</gravity>
+  </gazebo>
+  <joint name="tilt_joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <parent link="pan_link"/>
+    <child link="tilt_link"/>
+    <dynamics damping="${damping}" friction="${friction}"/>
+    <limit effort="1000" lower="-600.28" upper="600.28" velocity="30"/>
+  </joint>
+
+  <link name="chassis_link">
+    <xacro:eps_inertial/>
+    <visual>
+      <geometry>
+        <box size="${camera_dim} ${camera_dim} ${camera_dim}"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </visual>
+  </link>
+  <gazebo reference="chassis_link">
+    <gravity>false</gravity>
+  </gazebo>
+  <joint name="chassis_joint" type="fixed">
+    <parent link="tilt_link"/>
+    <child link="chassis_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <xacro:fixed_joint_params joint="chassis_joint"/>
+
+  <link name="imu_link">
+    <xacro:eps_inertial/>
+  </link>
+  <gazebo reference="imu_link">
+    <gravity>false</gravity>
+    <sensor name="axis_imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>10.0</update_rate>
+    </sensor>
+  </gazebo>
+  <joint name="imu_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="imu_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <xacro:fixed_joint_params joint="imu_joint"/>
+
+  <link name="camera_link">
+    <xacro:eps_inertial/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${pi/2} 0"/>
+      <geometry>
+        <cylinder length="0.005" radius="0.02"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.3 0.3 0.3 1"/>
+      </material>
+    </visual>
+  </link>
+  <gazebo reference="camera_link">
+    <gravity>false</gravity>
+    <sensor name="camera" type="camera">
+      <camera>
+        <horizontal_fov>${camera_hfov}</horizontal_fov>
+        <image>
+          <width>${camera_width}</width>
+          <height>${camera_height}</height>
+        </image>
+        <clip>
+          <near>${camera_clip_near}</near>
+          <far>${camera_clip_far}</far>
+        </clip>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>${camera_update_rate}</update_rate>
+      <visualize>${visualize_sensors}</visualize>
+      <topic>${camera_topic_right}</topic>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <joint name="camera_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="camera_link"/>
+    <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${sensor_offset} 0 0"/>
+  </joint>
+  <xacro:fixed_joint_params joint="camera_joint"/>
+
+
+<!-- Plugins -->
+  <ros2_control name="GazeboSystem" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+    <joint name="pan_joint">
+      <command_interface name="velocity">
+        <param name="min">-10</param>
+        <param name="max">10</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="tilt_joint">
+      <command_interface name="velocity">
+        <param name="min">-10</param>
+        <param name="max">10</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <sensor name="axis_imu_sensor">
+      <state_interface name="orientation.x"/>
+      <state_interface name="orientation.y"/>
+      <state_interface name="orientation.z"/>
+      <state_interface name="orientation.w"/>
+      <state_interface name="angular_velocity.x"/>
+      <state_interface name="angular_velocity.y"/>
+      <state_interface name="angular_velocity.z"/>
+      <state_interface name="linear_acceleration.x"/>
+      <state_interface name="linear_acceleration.y"/>
+      <state_interface name="linear_acceleration.z"/>
+    </sensor>
+  </ros2_control>
+
+  <!-- <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <parameters>$(find gazebo_simulation)/config/axis_camera_controller.yaml</parameters>
+    </plugin>
+  </gazebo> -->
+
+</robot>

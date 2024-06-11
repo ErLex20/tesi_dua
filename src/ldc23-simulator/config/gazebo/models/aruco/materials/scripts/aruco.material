@@ -1,0 +1,284 @@
+material aruco120
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco120.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco130
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco130.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco140
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco140.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco150
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco150.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco160
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco160.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco170
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco170.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco180
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco180.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco190
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco190.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco120
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco120.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco200
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco200.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco210
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco210.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco220
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco220.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco230
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco230.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco240
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco240.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco250
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco250.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco260
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco260.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco270
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco270.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco280
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco280.png
+                scale 1 1
+            }
+        }   
+    }
+}
+
+material aruco290
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture aruco290.png
+                scale 1 1
+            }
+        }   
+    }
+}

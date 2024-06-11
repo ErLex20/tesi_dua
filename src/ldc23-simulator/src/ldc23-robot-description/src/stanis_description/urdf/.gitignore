@@ -1,0 +1,3 @@
+# Ignore all URDFs but not xacro files
+*.urdf
+!*.urdf.xacro

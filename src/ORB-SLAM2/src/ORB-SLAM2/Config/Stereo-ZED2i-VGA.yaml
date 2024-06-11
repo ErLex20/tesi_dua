@@ -22,12 +22,19 @@ Camera.k2: 0.0
 Camera.p1: 0.0
 Camera.p2: 0.0
 
-# Image size
-Camera.width: 640
-Camera.height: 480
+# Image size Gazebo
+# Camera.width:
+# Camera.height: 480
 
-# Frames per second
-Camera.fps: 5.0
+# Image size Bunker
+Camera.width: 1280
+Camera.height: 720
+
+# Frames per second Gazebo
+# Camera.fps: 5.0
+
+# Frames per second Bunker
+Camera.fps: 15.0
 
 # Stereo baseline times fx (Camera.fx * baseline)
 Camera.bf: 26.9137

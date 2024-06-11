@@ -1,0 +1,438 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       xmlns:ignition="http://ignitionrobotics.org/schema" name="seppia">
+
+<!-- Includes -->
+  <xacro:include filename="$(find zed_description)/urdf/zed.urdf.xacro"/>
+
+<!-- Xacro parameters -->
+  <xacro:property name="namespace" value="seppia"/>
+  <xacro:property name="use_zedm" value="true"/>
+
+  <xacro:property name="zedm_to_base_x" value = "0.169"/>
+  <xacro:property name="zedm_to_base_y" value = "0.0"/>
+  <xacro:property name="zedm_to_base_z" value = "${0.034 + 0.066/2}"/> <!-- -0.048 -->
+  <xacro:property name="zedm_tilt" value = "${pi/12}"/>
+  <xacro:property name="zedm_imu_to_left_x" value = "0.002"/>
+  <xacro:property name="zedm_imu_to_left_y" value = "0.015"/>
+  <xacro:property name="zedm_imu_to_left_z" value = "0.00171"/>
+
+  <!-- <xacro:property name="zed2i_to_chassis_x" value = "0.18"/>
+  <xacro:property name="zed2i_to_chassis_y" value = "0.0"/>
+  <xacro:property name="zed2i_to_chassis_z" value = "${0.034 + 0.066/2}"/>
+  <xacro:property name="zed2i_tilt" value = "${pi/12}"/>
+  <xacro:property name="zed2i_imu_to_left_x" value = "0.002"/>
+  <xacro:property name="zed2i_imu_to_left_y" value = "0.015"/>
+  <xacro:property name="zed2i_imu_to_left_z" value = "0.00171"/> -->
+
+  <!-- Rover body -->
+  <xacro:property name="wheel_radius" value="0.05"/>
+  <xacro:property name="wheel_width" value="0.05"/>
+  <xacro:property name="wheel_scale" value="0.43"/>
+
+  <xacro:property name="wheelbase_length" value="0.324"/>
+  <xacro:property name="wheelbase_width" value="0.327"/>
+
+  <xacro:property name="chassis_height" value = "0.066"/>
+  <xacro:property name="chassis_elevation" value = "0.066"/>
+
+  <xacro:property name="lidar_to_chassis_x" value = "0.0"/>
+  <xacro:property name="lidar_to_chassis_y" value = "0.0"/>
+  <xacro:property name="lidar_to_chassis_z" value = "0.066"/>
+
+  <xacro:property name="usbcam_to_chassis_x" value = "0.1625"/>
+  <xacro:property name="usbcam_to_chassis_y" value = "0.099"/>
+  <xacro:property name="usbcam_to_chassis_z" value = "0.036"/>
+  <xacro:property name="usbcam_tilt" value = "${pi/8}"/>
+
+  <!-- Dynamics and simulation -->
+  <xacro:property name="wheel_mass" value="0.1"/>
+  <xacro:property name="total_mass" value = "3.0"/>
+  <xacro:property name="chassis_mass" value = "${total_mass-4*wheel_mass}"/>
+
+  <xacro:property name="eps_mass" value = "0.000001"/>
+  <xacro:property name="eps_dim" value = "0.01"/>
+
+  <xacro:property name="damping" value = "0.0"/>
+  <xacro:property name="friction" value = "0.0"/>
+
+  <xacro:property name="mu" value = "0.0"/>
+  <xacro:property name="mu2" value = "0.0"/>
+
+  <xacro:property name="min_depth" value = "0.001"/>
+  <xacro:property name="max_vel" value = "0"/>
+
+  <xacro:property name="visualize_sensors" value = "false"/>
+
+  <!-- Sensors -->
+  <xacro:property name="rplidar_mass" value = "0.19"/>
+  <xacro:property name="rplidar_r" value = "0.03785"/>
+  <xacro:property name="rplidar_h" value = "0.0408"/>
+  <xacro:property name="rplidar_update_rate" value = "15"/>
+  <xacro:property name="rplidar_topic" value = "laser_scanner"/>
+  <xacro:property name="rplidar_hor_samples" value = "1440"/>
+  <xacro:property name="rplidar_hor_resolution" value = "1"/>
+  <xacro:property name="rplidar_hor_min_angle" value = "-${pi}"/>
+  <xacro:property name="rplidar_hor_max_angle" value = "${pi}"/>
+  <xacro:property name="rplidar_vert_samples" value = "1"/>
+  <xacro:property name="rplidar_vert_resolution" value = "1"/>
+  <xacro:property name="rplidar_vert_min_angle" value = "0"/>
+  <xacro:property name="rplidar_vert_max_angle" value = "0"/>
+  <xacro:property name="rplidar_range_min" value = "0.1"/>
+  <xacro:property name="rplidar_range_max" value = "12"/>
+  <xacro:property name="rplidar_range_resolution" value = "0.01"/>
+  <xacro:property name="rplidar_noise_mean" value = "0"/>
+  <xacro:property name="rplidar_noise_stddev" value = "0.02"/>
+
+  <xacro:property name="usbcam_mass" value = "0.01"/>
+  <xacro:property name="usbcam_r" value = "0.01"/>
+  <xacro:property name="usbcam_h" value = "0.03"/>
+  <xacro:property name="usbcam_hfov" value = "1.9198"/> <!-- -->
+  <xacro:property name="usbcam_width" value = "640"/>
+  <xacro:property name="usbcam_height" value = "480"/>
+  <xacro:property name="usbcam_clip_near" value = "0.1"/>
+  <xacro:property name="usbcam_clip_far" value = "25"/>
+  <xacro:property name="usbcam_update_rate" value = "30"/>
+  <xacro:property name="usbcam_topic_right" value = "right_camera"/>
+  <xacro:property name="usbcam_topic_left" value = "left_camera"/>
+
+
+<!-- Xacro functions -->
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertia ixx="${m*(3*r*r+h*h)/12}" ixy = "0" ixz = "0"
+             iyy="${m*(3*r*r+h*h)/12}" iyz = "0"
+             izz="${m*r*r/2}" />
+  </xacro:macro>
+
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertia ixx="${m*(y*y+z*z)/12}" ixy = "0" ixz = "0"
+             iyy="${m*(x*x+z*z)/12}" iyz = "0"
+             izz="${m*(x*x+y*y)/12}" />
+  </xacro:macro>
+
+  <xacro:macro name="sphere_inertia" params="m r">
+    <inertia ixx="${2*m*r*r/5}" ixy = "0" ixz = "0"
+             iyy="${2*m*r*r/5}" iyz = "0"
+             izz="${2*m*r*r/5}" />
+  </xacro:macro>
+
+  <xacro:macro name="box_inertial" params="m x y z">
+    <inertial>
+      <mass value="${m}"/>
+      <xacro:box_inertia m="${m}" x="${x}" y="${y}" z="${z}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertial" params="m r h">
+    <inertial>
+      <mass value="${m}"/>
+      <xacro:cylinder_inertia m="${m}" r="${r}" h="${h}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="eps_inertial">
+    <inertial>
+      <mass value="${eps_mass}"/>
+      <xacro:box_inertia m="${eps_mass}" x="${eps_dim}" y="${eps_dim}" z="${eps_dim}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="fixed_joint_params" params="joint">
+    <gazebo reference="${joint}">
+      <preserveFixedJoint>true</preserveFixedJoint>
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="wheel" params="name sign_x sign_y mesh">
+    <link name="${name}_link">
+      <xacro:cylinder_inertial m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <mesh filename="model://seppia/meshes/${mesh}" scale="${wheel_scale} ${wheel_scale} ${wheel_scale}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder length="${wheel_width}" radius="${wheel_radius}"/>
+        </geometry>
+      </collision>
+    </link>
+    <gazebo reference="${name}_link">
+      <collision>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>${min_depth}</min_depth>
+              <max_vel>${max_vel}</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>${mu}</mu>
+              <mu2>${mu2}</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </gazebo>
+    <joint name="${name}_joint" type="continuous">
+      <axis xyz="0 0 1"/>
+      <parent link="chassis_link"/>
+      <child link="${name}_link"/>
+      <origin rpy="${-pi/2} 0 0" xyz="${sign_x * wheelbase_length/2} ${sign_y * wheelbase_width/2} ${-chassis_elevation+wheel_radius}"/>
+      <dynamics damping="${damping}" friction="${friction}"/>
+    </joint>
+  </xacro:macro>
+
+<!-- Body parts -->
+  <!-- Base link -->
+  <link name="base_footprint">
+    <xacro:eps_inertial/>
+  </link>
+
+  <!-- Chassis -->
+  <link name="chassis_link">
+    <xacro:box_inertial m="${chassis_mass}" x="${wheelbase_length}" y="${wheelbase_width}" z="${chassis_height}"/>
+    <visual>
+      <geometry>
+        <box size="${wheelbase_length} ${wheelbase_width} ${chassis_height}"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.4 0.4 0.4 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${wheelbase_length} ${wheelbase_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="chassis_link">
+    <collision>
+      <surface>
+        <contact>
+          <ode>
+            <min_depth>${min_depth}</min_depth>
+            <max_vel>${max_vel}</max_vel>
+          </ode>
+        </contact>
+      </surface>
+    </collision>
+  </gazebo>
+  <joint name="chassis_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="chassis_link"/>
+    <origin rpy="0 0 0" xyz="0 0 ${chassis_elevation}"/>
+  </joint>
+  <xacro:fixed_joint_params joint="chassis_joint"/>
+
+  <!-- Wheels -->
+  <xacro:wheel name="front_left"  sign_x=" 1" sign_y=" 1" mesh="omni_wheel_1.dae"/>
+  <xacro:wheel name="front_right" sign_x=" 1" sign_y="-1" mesh="omni_wheel_2.dae"/>
+  <xacro:wheel name="back_left"   sign_x="-1" sign_y=" 1" mesh="omni_wheel_2.dae"/>
+  <xacro:wheel name="back_right"  sign_x="-1" sign_y="-1" mesh="omni_wheel_1.dae"/>
+
+<!-- Sensors -->
+  <!-- Lidar -->
+  <link name="lidar_link">
+    <xacro:cylinder_inertial m="${rplidar_mass}" r="${rplidar_r}" h="${rplidar_h}"/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${rplidar_h}" radius="${rplidar_r}"/>
+      </geometry>
+    </visual>
+  </link>
+  <gazebo reference="lidar_link">
+    <sensor name='lidar_sensor' type='ray'>
+      <always_on>true</always_on>
+      <update_rate>${rplidar_update_rate}</update_rate>
+      <visualize>${visualize_sensors}</visualize>
+      <topic>${rplidar_topic}</topic>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>${rplidar_hor_samples}</samples>
+            <resolution>${rplidar_hor_resolution}</resolution>
+            <min_angle>${rplidar_hor_min_angle}</min_angle>
+            <max_angle>${rplidar_hor_max_angle}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>${rplidar_vert_samples}</samples>
+            <resolution>${rplidar_vert_resolution}</resolution>
+            <min_angle>${rplidar_vert_min_angle}</min_angle>
+            <max_angle>${rplidar_vert_max_angle}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>${rplidar_range_min}</min>
+          <max>${rplidar_range_max}</max>
+          <resolution>${rplidar_range_resolution}</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>${rplidar_noise_mean}</mean>
+          <stddev>${rplidar_noise_stddev}</stddev>
+        </noise>
+      </ray>
+      <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <namespace>${namespace}</namespace>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>${namespace}/lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="lidar_link"/>
+    <origin rpy="0 0 0" xyz="${lidar_to_chassis_x} ${lidar_to_chassis_y} ${chassis_height/2+lidar_to_chassis_z}"/>
+  </joint>
+  <xacro:fixed_joint_params joint="lidar_joint"/>
+
+  <!-- ZED -->
+  <xacro:zed/>
+
+  <!-- USB cameras -->
+  <link name="usbcam_right_link">
+    <xacro:cylinder_inertial m="${usbcam_mass}" r="${usbcam_r}" h="${usbcam_h}"/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${usbcam_h}" radius="${usbcam_r}"/>
+      </geometry>
+    </visual>
+  </link>
+  <gazebo reference="usbcam_right_link">
+    <sensor name="usbcam_right" type="camera">
+      <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+      <camera>
+        <horizontal_fov>${usbcam_hfov}</horizontal_fov>
+        <image>
+          <width>${usbcam_width}</width>
+          <height>${usbcam_height}</height>
+        </image>
+        <clip>
+          <near>${usbcam_clip_near}</near>
+          <far>${usbcam_clip_far}</far>
+        </clip>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>${usbcam_update_rate}</update_rate>
+      <visualize>${visualize_sensors}</visualize>
+      <topic>${usbcam_topic_right}</topic>
+      <plugin name="usbcam_right_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <joint name="usbcam_right_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="usbcam_right_link"/>
+    <origin rpy="${-pi/2+usbcam_tilt} 0 ${pi}" xyz="-${usbcam_to_chassis_x} -${usbcam_to_chassis_y} ${chassis_height/2+usbcam_to_chassis_z}"/>
+  </joint>
+  <xacro:fixed_joint_params joint="usbcam_right_joint"/>
+  <link name="usbcam_left_link">
+    <xacro:cylinder_inertial m="${usbcam_mass}" r="${usbcam_r}" h="${usbcam_h}"/>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${usbcam_h}" radius="${usbcam_r}"/>
+      </geometry>
+    </visual>
+  </link>
+  <gazebo reference="usbcam_left_link">
+    <sensor name="usbcam_left" type="camera">
+      <pose> 0 0 0 0 ${-pi/2} ${pi/2} </pose>
+      <camera>
+        <horizontal_fov>${usbcam_hfov}</horizontal_fov>
+        <image>
+          <width>${usbcam_width}</width>
+          <height>${usbcam_height}</height>
+        </image>
+        <clip>
+          <near>${usbcam_clip_near}</near>
+          <far>${usbcam_clip_far}</far>
+        </clip>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>${usbcam_update_rate}</update_rate>
+      <visualize>${visualize_sensors}</visualize>
+      <topic>${usbcam_topic_left}</topic>
+      <frame_name>camera_link</frame_name>
+      <plugin name="usbcam_left_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>${namespace}</namespace>
+        </ros>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <joint name="usbcam_left_joint" type="fixed">
+    <parent link="chassis_link"/>
+    <child link="usbcam_left_link"/>
+    <origin rpy="${-pi/2+usbcam_tilt} 0 0" xyz="-${usbcam_to_chassis_x} ${usbcam_to_chassis_y} ${chassis_height/2+usbcam_to_chassis_z}"/>
+  </joint>
+  <xacro:fixed_joint_params joint="usbcam_left_joint"/>
+
+
+<!-- Plugins -->
+  <gazebo>
+    <plugin name='seppia_controller' filename='libseppia_planar_move.so'>
+      <ros>
+        <namespace>${namespace}</namespace>
+        <remapping>cmd_vel:=cmd_vel</remapping>
+        <remapping>odom:=odom</remapping>
+      </ros>
+      <odometry_frame>${namespace}/odom</odometry_frame>
+      <update_rate>100</update_rate>
+      <publish_rate>10</publish_rate>
+      <robot_base_frame>${namespace}/base_footprint</robot_base_frame>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <update_rate>100</update_rate>
+      <covariance_x>0</covariance_x>
+      <covariance_y>0</covariance_y>
+      <covariance_yaw>0</covariance_yaw>
+    </plugin>
+    <plugin name="gazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
+      <ros>
+        <namespace>${namespace}</namespace>
+        <xacro:if value="${use_zedm}">
+          <remapping>odom:=${zedm_pose_topic}</remapping>
+        </xacro:if>
+        <xacro:unless value="${use_zedm}">
+          <remapping>odom:=${zed2i_pose_topic}</remapping>
+        </xacro:unless>
+      </ros>
+      <!-- Name of the link within this model whose pose will be published -->
+      <xacro:if value="${use_zedm}">
+        <body_name>${namespace}/zedm_left_link</body_name>
+      </xacro:if>
+      <xacro:unless value="${use_zedm}">
+        <body_name>${namespace}/zed2i_left_link</body_name>
+      </xacro:unless>
+      <!-- Name of another link within this model to use as a reference frame.
+          Remove the tag to use the world as a reference. -->
+      <!-- <frame_name>odom</frame_name> -->
+      <xacro:if value="${use_zedm}">
+        <update_rate>${zedm_image_update_rate}</update_rate>
+      </xacro:if>
+      <xacro:unless value="${use_zedm}">
+        <update_rate>${zed2i_image_update_rate}</update_rate>
+      </xacro:unless>
+      <!-- Translation offset to be added to the pose. -->
+      <xyz_offset>0 0 0</xyz_offset>
+      <!-- Rotation offset to be added to the pose, in Euler angles. -->
+      <rpy_offset>0 0 0</rpy_offset>
+      <!-- Standard deviation of the noise to be added to the reported velocities. -->
+      <gaussian_noise>0.01</gaussian_noise>
+    </plugin>
+  </gazebo>
+
+</robot>
