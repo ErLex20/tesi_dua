@@ -61,6 +61,8 @@
 
 #include <theora_wrappers/publisher.hpp>
 
+#include <std_msgs/msg/empty.hpp>
+
 using namespace sensor_msgs::msg;
 using namespace std_srvs::srv;
 
@@ -106,6 +108,9 @@ private:
 
   /* Service callbacks. */
   void hw_enable_callback(SetBool::Request::SharedPtr req, SetBool::Response::SharedPtr resp);
+
+  /* Publishers. */
+  rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr empty_pub_;
 
   /* image_transport publishers and buffers. */
   std::shared_ptr<image_transport::CameraPublisher> camera_pub_left_;

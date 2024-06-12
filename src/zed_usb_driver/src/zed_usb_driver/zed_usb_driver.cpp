@@ -53,6 +53,9 @@ CameraDriverNode::CameraDriverNode(const rclcpp::NodeOptions & opts)
   // Initialize synchronization primitives
   stopped_.store(true, std::memory_order_release);
 
+  // Create empty publisher
+  empty_pub_ = this->create_publisher<std_msgs::msg::Empty>("camera_hz", rclcpp::QoS(1));
+
   // Create and set up CameraInfoManager
   cinfo_manager_left_ = std::make_shared<camera_info_manager::CameraInfoManager>(this);
   cinfo_manager_left_->setCameraName(this->get_parameter("camera_name").as_string());
@@ -273,6 +276,10 @@ void CameraDriverNode::camera_sampling_routine()
       camera_info_left_msg->header.set__frame_id(frame_id_);
       camera_info_right_msg->header.set__stamp(timestamp);
       camera_info_right_msg->header.set__frame_id(frame_id_);
+
+      // Publish empty frame
+      std_msgs::msg::Empty empty_msg;
+      empty_pub_->publish(empty_msg);
 
       // Publish new frame together with its CameraInfo on all available transports
       camera_pub_left_->publish(image_left_msg, camera_info_left_msg);
