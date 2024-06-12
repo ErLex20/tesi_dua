@@ -23,7 +23,7 @@ def generate_launch_description():
     config = os.path.join(
         get_package_share_directory('orbslam2_driver'),
         'config',
-        'orb2_driver_zed2i_stereo_vga.yaml')
+        'orb2_driver_zedm_stereo_vga.yaml')
 
     # Declare launch arguments
     nm = LaunchConfiguration('name')
