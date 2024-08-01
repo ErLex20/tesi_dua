@@ -343,7 +343,7 @@ public:
 
             imuIntegratorImu_->resetIntegrationAndSetBias(prevBias_);
             imuIntegratorOpt_->resetIntegrationAndSetBias(prevBias_);
-            
+
             key = 1;
             systemInitialized = true;
             return;

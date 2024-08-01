@@ -3,16 +3,13 @@
     autostart: true
     body_frame_id: base_footprint
     camera_orientation_topic: '/imu_plugin/out'
-    # camera_topic_1: /seppia/zed2i_left_camera/image_raw
-    # camera_topic_2: /seppia/zed2i_right_camera/image_raw
-    camera_topic_1: /usb_camera/zed_usb_driver/camera_left/image_rect_color
-    camera_topic_2: /usb_camera/zed_usb_driver/camera_right/image_rect_color
+    camera_topic_1: /seppia/zed2i_left_camera/image_raw
+    camera_topic_2: /seppia/zed2i_right_camera/image_raw
     covariance_scaling_factor: 1.0
     display: true
     frame_view: false
     global_frame_id: ''
-    # link_namespace: 'seppia/'
-    link_namespace: 'usb_camera/zed_usb_driver/'
+    link_namespace: 'seppia/'
     mode: STEREO
     preconvert_frames: true
     publish_map: true
